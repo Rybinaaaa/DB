@@ -21,8 +21,9 @@ create table employee
     id        serial primary key,
     salary    int,
     license   char(15) not null,
-    position  varchar(15),
+    position  varchar(50),
     person_id int      not null,
+    constraint chk_salary check ( salary > 100 and salary < 10000 ),
     constraint fk_person
         foreign key (person_id) references person (pid)
 );
@@ -62,17 +63,12 @@ create table purchase
     client_id     int not null,
     shopBranch_id int not null,
     number        int not null,
---     не serial потому что ноиер покупки именно у клиента, если бы был serial то это бы был искусственный идентификатор
     totalSum      decimal(9, 3),
---     ???
     id            serial primary key,
---     ???
     constraint fk_shopBranch
         foreign key (shopBranch_id) references shopBranch (number),
     constraint fk_client
         foreign key (client_id) references client (number)
---     constraint pk_purchase
---         primary key (client_id, number)
 );
 
 create table product
@@ -82,7 +78,6 @@ create table product
     brand varchar(30) not null,
     size  varchar(10) not null,
     id    serial primary key
---     constraint pk_product primary key (name, brand, size)
 );
 
 create table images
@@ -153,4 +148,3 @@ create table storing
         foreign key (stock_shopBranch) references stock (shopBranch),
     constraint pk_storing primary key (product_id, stock_shopBranch)
 )
-
